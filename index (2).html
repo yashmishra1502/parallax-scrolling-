@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Four days up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--font:'Bricolage Grotesque',system-ui,sans-serif;color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:#1b1f5e;font-family:var(--font);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+/* printed-paper grain */
+body::after{content:"";position:fixed;inset:0;z-index:30;pointer-events:none;opacity:.22;mix-blend-mode:multiply;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .2  0 0 0 0 .2  0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.scene{position:relative;overflow:hidden}
+.s1{height:140vh;background:#f29b84;--t:#2a0f3a}
+.s2{height:150vh;background:#a9d8cf;--t:#14302f}
+.s3{height:150vh;background:#f0b840;--t:#2b1533}
+.s4{height:150vh;background:#1b1f5e;--t:#fdebc8}
+.layer{position:absolute;left:-6%;width:112%;top:0;height:100%;will-change:transform;pointer-events:none}
+.mt{top:auto;bottom:-4vh;height:var(--h,60vh);filter:drop-shadow(0 -5px 9px rgba(30,8,40,.3))}
+.mt svg,.peak svg{display:block;width:100%;height:100%}
+.mt::after{content:"";position:absolute;left:0;right:0;top:calc(100% - 1px);height:100vh;background:var(--c)}
+.s1 .mt svg{transform:translateY(45%)}
+body.go .s1 .mt svg{transform:none;transition:transform 1.5s cubic-bezier(.2,.8,.2,1) calc(var(--i)*.13s)}
+.peak{top:auto;bottom:-3vh;left:50%;width:min(130vw,980px);height:min(80vh,620px);margin-left:calc(min(130vw,980px)/-2);filter:drop-shadow(0 -6px 12px rgba(0,0,0,.35))}
+.orb{position:absolute;border-radius:50%}
+.sun{left:62%;top:26%;width:min(30vw,250px);aspect-ratio:1;background:#fff0c2;box-shadow:0 0 0 16px rgba(255,240,194,.38),0 0 0 40px rgba(255,240,194,.2)}
+.sun2{left:14%;top:44%;width:min(46vw,380px);aspect-ratio:1;background:#e2452f;box-shadow:0 0 0 22px rgba(226,69,47,.35),0 0 0 54px rgba(226,69,47,.18)}
+.moon{right:13%;top:12%;width:min(15vw,96px);aspect-ratio:1;background:transparent;box-shadow:-16px 8px 0 0 #fdebc8}
+.clouds{top:-15%;height:130%;filter:drop-shadow(0 7px 6px rgba(20,50,60,.2))}
+.cloud{position:absolute;width:150px;height:48px;border-radius:48px;background:#fffaf0}
+.cloud::before,.cloud::after{content:"";position:absolute;background:inherit;border-radius:50%}
+.cloud::before{width:62px;height:62px;left:24px;top:-28px}
+.cloud::after{width:84px;height:84px;left:62px;top:-42px}
+.birds{color:#14302f}.birds svg{position:absolute;width:30px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.stars{top:-15%;height:130%}
+.stars i{position:absolute;background:#ffd36e;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%)}
+.txt{position:absolute;z-index:5;left:6vw;top:20%;max-width:28rem;color:var(--t)}
+.txt.r{left:auto;right:6vw}
+.txt small{display:block;font-size:1rem;font-weight:500;margin-bottom:.6rem;opacity:.8}
+.txt h2{font-weight:800;font-size:clamp(2.4rem,7vw,5rem);line-height:.95;letter-spacing:-.035em;margin:0 0 1rem}
+.txt p{font-size:clamp(1.05rem,1.8vw,1.25rem);line-height:1.55;margin:0;max-width:30ch}
+.hero{top:14%;left:6vw;max-width:none}
+.hero h1{font-weight:800;font-size:clamp(3.6rem,17vw,13rem);line-height:.84;letter-spacing:-.05em;margin:0}
+.hero p{margin:1.4rem 0 0;font-size:clamp(1.05rem,2vw,1.4rem);max-width:24ch;line-height:1.4}
+button{font:500 1.05rem var(--font);color:#1b1f5e;background:#fdebc8;border:0;border-radius:6px;padding:.8rem 1.4rem;margin-top:1.6rem;cursor:pointer;box-shadow:0 4px 0 #b99b63;transition:transform .15s,box-shadow .15s}
+button:hover{transform:translateY(2px);box-shadow:0 2px 0 #b99b63}
+button:focus-visible{outline:3px solid #ffd36e;outline-offset:3px}
+#day{position:fixed;left:max(14px,2.4vw);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;font-weight:500;font-size:.95rem;color:#fff;mix-blend-mode:difference}
+@media (prefers-reduced-motion:reduce){.s1 .mt svg{transform:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="day">Day 1</div>
+
+<section class="scene s1">
+  <div class="layer" data-s="-.45"><div class="orb sun"></div></div>
+  <div class="layer mt" data-s="-.3" data-k="r" data-r="3,150,230" style="--c:#e77c82;--h:80vh;--i:0"></div>
+  <div class="layer mt" data-s="-.18" data-k="r" data-r="7,170,240" style="--c:#c25a7a;--h:66vh;--i:1"></div>
+  <div class="layer" data-s="-.1"><div class="txt hero"><small>Day 1, 5:40 am</small><h1>four days up.</h1><p>Field notes from a climb, cut out of paper.</p></div></div>
+  <div class="layer mt" data-s="-.04" data-k="r" data-r="12,160,250" style="--c:#7a3f73;--h:52vh;--i:2"></div>
+  <div class="layer mt" data-s=".1" data-k="p" data-r="5,40,360" style="--c:#3b2a5c;--h:34vh;--i:3"></div>
+  <div class="layer mt" data-s=".02" data-k="r" data-r="16,50,300" style="--c:#a9d8cf;--h:20vh;--i:4"></div>
+</section>
+
+<section class="scene s2">
+  <div class="layer birds" data-s="-.3" data-x=".18" data-b="6"></div>
+  <div class="layer clouds" data-s="-.32" data-x=".04" data-n="6" data-lo=".6" data-hi=".95"></div>
+  <div class="layer mt" data-s="-.2" data-k="r" data-r="22,150,240" style="--c:#7fbfb6;--h:62vh"></div>
+  <div class="layer clouds" data-s=".28" data-x="-.1" data-n="3" data-lo="1.5" data-hi="2.2"></div>
+  <div class="layer mt" data-s="-.08" data-k="p" data-r="9,60,330" style="--c:#3f8a74;--h:42vh"></div>
+  <div class="layer"><div class="txt" style="top:12%"><small>Day 2</small><h2>The pines start.</h2><p>We left camp at six. By nine the cloud was below us, and the only sound was boots on needles.</p></div></div>
+  <div class="layer mt" data-s=".1" data-k="p" data-r="14,70,350" style="--c:#24604f;--h:30vh"></div>
+  <div class="layer mt" data-s=".02" data-k="r" data-r="24,40,300" style="--c:#f0b840;--h:18vh"></div>
+</section>
+
+<section class="scene s3">
+  <div class="layer" data-s="-.4"><div class="orb sun2"></div></div>
+  <div class="layer mt" data-s="-.2" data-k="r" data-r="31,150,240" style="--c:#d9822e;--h:62vh"></div>
+  <div class="layer mt" data-s="-.08" data-k="r" data-r="35,160,250" style="--c:#a8406a;--h:48vh"></div>
+  <div class="layer"><div class="txt r" style="top:12%"><small>Day 3</small><h2>Long light.</h2><p>The sun sat on the ridge for almost an hour. Nobody said anything, which felt about right.</p></div></div>
+  <div class="layer mt" data-s=".1" data-k="p" data-r="18,60,340" style="--c:#4b2a66;--h:34vh"></div>
+  <div class="layer mt" data-s=".02" data-k="r" data-r="26,40,300" style="--c:#1b1f5e;--h:16vh"></div>
+</section>
+
+<section class="scene s4">
+  <div class="layer stars" data-s="-.4" data-n="55" data-sz="7"></div>
+  <div class="layer stars" data-s="-.2" data-n="28" data-sz="13"></div>
+  <div class="layer" data-s="-.5"><div class="orb moon"></div></div>
+  <div class="layer"><div class="txt" style="top:10%"><small>Day 4</small><h2>Cold, clear, quiet.</h2><p>We reached the top in the dark and waited. Then the sky did the rest.</p><button id="top">Back to base</button></div></div>
+  <div class="layer peak" data-s=".04" style="left:50%;width:min(130vw,980px)"><svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMax meet"><path d="M0 520L330 90L420 150L470 70L800 520Z" fill="#2c3280"/><path d="M470 70L800 520L560 520L500 300Z" fill="#232970"/><path d="M330 90L420 150L470 70L520 160L485 148L455 202L420 166L385 212L362 150L345 176Z" fill="#fdebc8"/></svg></div>
+  <div class="layer mt" data-s=".22" data-k="r" data-r="44,110,280" style="--c:#0e1140;--h:22vh"></div>
+</section>
+
+<script>
+(function(){
+const $=s=>[...document.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function ridge(s,amp,base){const r=rng(s),n=34;let d='M0 400L0 '+base;
+  for(let i=0;i<=n;i++){const y=base-amp*(.25+.75*Math.abs(Math.sin(i*.5+s))*.72+r()*.28);d+='L'+(i*1440/n).toFixed(0)+' '+Math.max(8,y).toFixed(0)}
+  return d+'L1440 400Z'}
+function pines(s,hmin,base){const r=rng(s);let d='M0 400L0 '+base,x=0;
+  while(x<1440){const w=34+r()*30,h=hmin*.5+r()*hmin;d+='L'+x.toFixed(0)+' '+base+'L'+(x+w/2).toFixed(0)+' '+(base-h).toFixed(0)+'L'+(x+w).toFixed(0)+' '+base;x+=w*.8}
+  return d+'L1440 '+base+'L1440 400Z'}
+$('.mt').forEach(el=>{const [s,a,b]=el.dataset.r.split(',').map(Number);
+  const d=el.dataset.k==='p'?pines(s,a,b):ridge(s,a,b);
+  el.innerHTML='<svg viewBox="0 0 1440 400" preserveAspectRatio="none"><path d="'+d+'" fill="var(--c)"/></svg>'});
+$('.clouds').forEach((el,k)=>{const r=rng(k*7+3),n=+el.dataset.n,lo=+el.dataset.lo,hi=+el.dataset.hi;
+  for(let i=0;i<n;i++){const c=document.createElement('div');c.className='cloud';
+    c.style.cssText='left:'+(r()*90)+'%;top:'+(10+r()*75)+'%;scale:'+(lo+r()*(hi-lo));el.appendChild(c)}});
+$('.birds').forEach(el=>{const r=rng(11);for(let i=0;i<+el.dataset.b;i++){
+  el.insertAdjacentHTML('beforeend','<svg viewBox="0 0 30 13" style="left:'+(r()*85)+'%;top:'+(15+r()*40)+'%;scale:'+(.7+r()*.8)+'"><path d="M1 3Q8 0 15 9Q22 0 29 3"/></svg>')}});
+$('.stars').forEach((el,k)=>{const r=rng(k+60),z=+el.dataset.sz;
+  for(let i=0;i<+el.dataset.n;i++){const s=document.createElement('i'),q=z*(.6+r()*.7);
+    s.style.cssText='left:'+(r()*100)+'%;top:'+(r()*100)+'%;width:'+q+'px;height:'+q+'px';el.appendChild(s)}});
+
+const scenes=$('.scene').map(sc=>({el:sc,top:0,h:0,layers:[...sc.querySelectorAll('.layer')].filter(l=>l.dataset.s).map(l=>({el:l,s:RM?0:+l.dataset.s,x:RM?0:+(l.dataset.x||0)}))}));
+let vh=innerHeight;
+function measure(){vh=innerHeight;scenes.forEach(o=>{o.top=o.el.offsetTop;o.h=o.el.offsetHeight})}
+addEventListener('resize',measure);addEventListener('load',measure);measure();
+const day=document.getElementById('day');let last=0,cur=scrollY;
+function frame(){
+  const tgt=scrollY;cur+=(tgt-cur)*(RM?1:.12);if(Math.abs(tgt-cur)<.05)cur=tgt;
+  scenes.forEach(o=>{const p=o.top-cur+o.h/2-vh/2;if(Math.abs(p)>o.h/2+vh)return;
+    o.layers.forEach(l=>{l.el.style.transform='translate3d('+(p*l.x).toFixed(1)+'px,'+(p*l.s).toFixed(1)+'px,0)'})});
+  let i=scenes.findIndex(o=>tgt+vh*.5<o.top+o.h);if(i<0)i=3;
+  if(i!==last){last=i;day.textContent='Day '+(i+1)}
+  requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add('go')));
+document.getElementById('top').onclick=()=>scrollTo({top:0,behavior:RM?'auto':'smooth'});
+})();
+</script>
+</body>
+</html>
